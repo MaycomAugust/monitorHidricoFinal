@@ -1,0 +1,935 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação Rio - Sensor Ultrassônico</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          margin: 0;
+          background: linear-gradient(to bottom, #1a2980, #26d0ce);
+          color: #333;
+          padding: 20px;
+        }
+
+        .container {
+          background-color: rgba(255, 255, 255, 0.95);
+          border-radius: 15px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          padding: 25px;
+          width: 100%;
+          max-width: 800px;
+        }
+
+        h2 {
+          text-align: center;
+          margin-bottom: 25px;
+          color: #1a2980;
+          font-size: 28px;
+        }
+
+        .dashboard {
+          display: flex;
+          gap: 20px;
+          margin-bottom: 20px;
+        }
+
+        .data-card {
+          flex: 1;
+          background: linear-gradient(to bottom right, #4da6ff, #1a6fc4);
+          color: white;
+          padding: 15px;
+          border-radius: 10px;
+          text-align: center;
+        }
+
+        .data-value {
+          font-size: 24px;
+          font-weight: bold;
+          margin-top: 5px;
+        }
+
+        .simulation-area {
+          position: relative;
+          width: 100%;
+          height: 300px;
+          border: 3px solid #2c3e50;
+          border-radius: 8px;
+          background: #d2b48c; /* chão */
+          overflow: hidden;
+          margin-bottom: 20px;
+        }
+
+        /* água */
+        .water {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 40%; /* nível inicial */
+          background: linear-gradient(to bottom, #4da6ff, #1a6fc4);
+          transition: height 0.3s ease;
+        }
+
+        .water::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 5px;
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* pilastra */
+        .pillar {
+          position: absolute;
+          right: 20px;
+          bottom: 0;
+          width: 20px;
+          height: 100%;
+          background: linear-gradient(to bottom, #7f8c8d, #555);
+          z-index: 2;
+        }
+
+        /* braço do sensor */
+        .arm {
+          position: absolute;
+          top: 50px;
+          right: 40px;
+          width: 90px;
+          height: 15px;
+          background: #555;
+          z-index: 2;
+        }
+
+        /* sensor */
+        .sensor {
+          position: absolute;
+          top: 47px;
+          right: 109.5px;
+          width: 30px;
+          height: 20px;
+          background: #34495e;
+          border-radius: 3px;
+          z-index: 3;
+        }
+
+        /* ondas ultrassom - APONTANDO PARA BAIXO */
+        .waves {
+          position: absolute;
+          top: 70px; /* posicionado abaixo do sensor */
+          right: 97px;
+          color: rgba(0, 0, 0, 0.7);
+          z-index: 2;
+          animation: wave 1s infinite;
+          transform: rotate(90deg);
+          transform-origin: left top;
+        }
+
+        @keyframes wave {
+          0% { transform: rotate(90deg) translateX(0); opacity: 1; }
+          100% { transform: rotate(90deg) translateX(100px); opacity: 0; }
+        }
+
+        /* botões */
+        .buttons {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 20px;
+          justify-content: center;
+        }
+
+        .btn {
+          padding: 12px 25px;
+          border: none;
+          border-radius: 8px;
+          background: #2c3e50;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+          transform: translateY(0);
+        }
+
+        .btn.active {
+          background: #1a2980;
+        }
+
+        .btn#fillBtn.active {
+          background: #27ae60;
+        }
+
+        .btn#drainBtn.active {
+          background: #e74c3c;
+        }
+
+        .btn i {
+          font-size: 18px;
+        }
+
+        /* log */
+        .log-container {
+          width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .log-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+
+        .log-title {
+          font-weight: bold;
+          color: #2c3e50;
+        }
+
+        .clear-btn {
+          background: #95a5a6;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          padding: 5px 10px;
+          cursor: pointer;
+          font-size: 12px;
+        }
+
+        .clear-btn:hover {
+          background: #7f8c8d;
+        }
+
+        .log {
+          width: 100%;
+          height: 120px;
+          overflow-y: auto;
+          background: #f9f9f9;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          padding: 10px;
+          font-size: 14px;
+          font-family: 'Courier New', monospace;
+        }
+
+        .log-entry {
+          margin-bottom: 5px;
+          padding-bottom: 5px;
+          border-bottom: 1px dotted #eee;
+        }
+
+        .log-time {
+          color: #7f8c8d;
+          font-size: 12px;
+        }
+
+        .log-message {
+          color: #2c3e50;
+        }
+
+        .warning {
+          color: #e74c3c;
+          font-weight: bold;
+        }
+
+        .alert-badge {
+          display: inline-block;
+          background-color: #e74c3c;
+          color: white;
+          border-radius: 4px;
+          padding: 2px 6px;
+          font-size: 10px;
+          margin-left: 5px;
+          font-weight: bold;
+        }
+
+        /* Tabela de dados */
+        .data-table-container {
+          width: 100%;
+          margin-top: 20px;
+        }
+
+        .data-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 10px;
+          background: #f9f9f9;
+          border-radius: 6px;
+          overflow: hidden;
+        }
+
+        .data-table th, .data-table td {
+          padding: 8px 12px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+          background: #2c3e50;
+          color: white;
+          font-weight: bold;
+        }
+
+        .data-table tr:nth-child(even) {
+          background: #f2f2f2;
+        }
+
+        .data-table tr:hover {
+          background: #e9e9e9;
+        }
+
+        .alert-row {
+          background-color: #ffe6e6 !important;
+        }
+
+        .alert-indicator {
+          color: #e74c3c;
+          font-weight: bold;
+        }
+
+        /* Alert Panel */
+        .alert-panel {
+          background-color: #ffe6e6;
+          border-left: 4px solid #e74c3c;
+          border-radius: 4px;
+          padding: 10px 15px;
+          margin-bottom: 20px;
+          display: none;
+        }
+
+        .alert-panel.visible {
+          display: block;
+        }
+
+        .alert-panel-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 5px;
+        }
+
+        .alert-title {
+          color: #e74c3c;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .dismiss-alert {
+          background: none;
+          border: none;
+          color: #e74c3c;
+          cursor: pointer;
+          font-size: 16px;
+        }
+
+        .alert-content {
+          color: #333;
+          font-size: 14px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 700px) {
+          .dashboard {
+            flex-direction: column;
+          }
+
+          .buttons {
+            flex-direction: column;
+          }
+
+          .simulation-area {
+            height: 250px;
+          }
+
+          .data-table {
+            font-size: 12px;
+          }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <h2><i class="fas fa-water"></i> Simulação Rio - Sensor Ultrassônico</h2>
+
+    <!-- Painel de alerta -->
+    <div class="alert-panel" id="alertPanel">
+        <div class="alert-panel-header">
+            <div class="alert-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>ALERTA: Nível de Água Crítico</span>
+            </div>
+            <button class="dismiss-alert" id="dismissAlert">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="alert-content" id="alertContent">
+            O nível da água atingiu um valor crítico. Tome as medidas necessárias.
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="data-card">
+            <div>Nível Atual</div>
+            <div class="data-value" id="currentLevel">2.0m</div>
+        </div>
+        <div class="data-card">
+            <div>Vazão</div>
+            <div class="data-value" id="flowRate">0.0 m³/s</div>
+        </div>
+        <div class="data-card">
+            <div>Volume</div>
+            <div class="data-value" id="volume">0 m³</div>
+        </div>
+    </div>
+
+    <div class="simulation-area">
+        <div class="water" id="water"></div>
+
+        <div class="pillar"></div>
+        <div class="arm"></div>
+        <div class="sensor"></div>
+        <div class="waves">)))</div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn" id="fillBtn"><i class="fas fa-fill-drip"></i> Encher</button>
+        <button class="btn" id="drainBtn"><i class="fas fa-faucet"></i> Esvaziar</button>
+        <button class="btn" id="exportBtn"><i class="fas fa-download"></i> Exportar Dados</button>
+        <button class="btn" id="configBtn"><i class="fas fa-cog"></i> Configurar</button>
+    </div>
+
+    <div class="log-container">
+        <div class="log-header">
+            <div class="log-title">Registro de Eventos</div>
+            <button class="clear-btn" id="clearLog"><i class="fas fa-trash"></i> Limpar</button>
+        </div>
+        <div class="log" id="log"></div>
+    </div>
+
+    <div class="data-table-container">
+        <div class="log-header">
+            <div class="log-title">Dados Salvos Automaticamente</div>
+            <div class="auto-save-info">A cada 2 seg</div>
+        </div>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Data/Hora</th>
+                <th>Nível (m)</th>
+                <th>Vazão (m³/s)</th>
+                <th>Volume (m³)</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="dataTableBody">
+            <!-- Dados serão inseridos aqui automaticamente -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal de Configuração -->
+<div class="modal" id="configModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: white; padding: 20px; border-radius: 10px; width: 90%; max-width: 500px;">
+        <h3 style="margin-bottom: 20px;">Configuração do Sensor</h3>
+        <div style="margin-bottom: 15px;">
+            <label>Sensor ID:</label>
+            <input type="text" id="sensorId" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>URL da API:</label>
+            <input type="text" id="apiUrl" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>Nível Crítico Alto (m):</label>
+            <input type="number" id="criticalHigh" step="0.1" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label>Nível Crítico Baixo (m):</label>
+            <input type="number" id="criticalLow" step="0.1" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button id="cancelConfig" class="btn" style="background: #95a5a6;">Cancelar</button>
+            <button id="saveConfig" class="btn">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ========== CONSTANTES CONFIGURÁVEIS ==========
+    const DEFAULT_API_URL = "http://localhost:8081/api";
+    let SENSOR_ID = "SENSOR_004";  // ===========UUID padrão do sensor=================
+    let API_BASE_URL = DEFAULT_API_URL;
+    let CRITICAL_HIGH = 4.0;
+    let CRITICAL_LOW = 1.0;
+
+    // ========== VARIÁVEIS DO SISTEMA ==========
+    const water = document.getElementById("water");
+    const log = document.getElementById("log");
+    const fillBtn = document.getElementById("fillBtn");
+    const drainBtn = document.getElementById("drainBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    const configBtn = document.getElementById("configBtn");
+    const clearLogBtn = document.getElementById("clearLog");
+    const currentLevel = document.getElementById("currentLevel");
+    const flowRate = document.getElementById("flowRate");
+    const volumeElement = document.getElementById("volume");
+    const dataTableBody = document.getElementById("dataTableBody");
+    const alertPanel = document.getElementById("alertPanel");
+    const alertContent = document.getElementById("alertContent");
+    const dismissAlert = document.getElementById("dismissAlert");
+    const configModal = document.getElementById("configModal");
+    const cancelConfig = document.getElementById("cancelConfig");
+    const saveConfig = document.getElementById("saveConfig");
+
+    // Configuração física do rio
+    const MAX_HEIGHT = 6.0;
+    const MIN_HEIGHT = 0.0;
+    const RIVER_WIDTH = 10;
+    const RIVER_LENGTH = 100;
+    const AUTO_SAVE_INTERVAL = 2000;
+
+    let waterLevel = 2.0;
+    let filling = false;
+    let draining = false;
+    let flow = 0.0;
+    let dataLog = [];
+    let autoSaveInterval;
+    let alertActive = false;
+    let sensorStatus = "NORMAL";
+    let sensorActive = true;
+
+    // ========== INICIALIZAÇÃO ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      loadConfig();
+      setupEventListeners();
+      updateWater();
+      startAutoSave();
+      startAnimationLoop(); // ✅ INICIA O LOOP DE ANIMAÇÃO
+      saveLog("Sistema iniciado. Nível atual: " + waterLevel.toFixed(2) + "m");
+    });
+
+    // ========== CONFIGURAÇÃO ==========
+    function loadConfig() {
+      const savedConfig = localStorage.getItem('sensorConfig');
+      if (savedConfig) {
+        const config = JSON.parse(savedConfig);
+        SENSOR_ID = config.sensorId || SENSOR_ID;
+        API_BASE_URL = config.apiUrl || DEFAULT_API_URL;
+        CRITICAL_HIGH = config.criticalHigh || CRITICAL_HIGH;
+        CRITICAL_LOW = config.criticalLow || CRITICAL_LOW;
+      }
+    }
+
+    function saveConfigToStorage() {
+      const config = {
+        sensorId: SENSOR_ID,
+        apiUrl: API_BASE_URL,
+        criticalHigh: CRITICAL_HIGH,
+        criticalLow: CRITICAL_LOW
+      };
+      localStorage.setItem('sensorConfig', JSON.stringify(config));
+    }
+
+    // ========== SETUP DE EVENTOS ==========
+    function setupEventListeners() {
+      fillBtn.addEventListener('mousedown', startFilling);
+      fillBtn.addEventListener('mouseup', stopFilling);
+      fillBtn.addEventListener('mouseleave', stopFilling);
+      fillBtn.addEventListener('touchstart', startFilling, { passive: true });
+      fillBtn.addEventListener('touchend', stopFilling);
+      
+      drainBtn.addEventListener('mousedown', startDraining);
+      drainBtn.addEventListener('mouseup', stopDraining);
+      drainBtn.addEventListener('mouseleave', stopDraining);
+      drainBtn.addEventListener('touchstart', startDraining, { passive: true });
+      drainBtn.addEventListener('touchend', stopDraining);
+      
+      exportBtn.addEventListener('click', exportData);
+      configBtn.addEventListener('click', showConfigModal);
+      clearLogBtn.addEventListener('click', clearLog);
+      dismissAlert.addEventListener('click', dismissAlertPanel);
+      cancelConfig.addEventListener('click', hideConfigModal);
+      saveConfig.addEventListener('click', saveConfiguration);
+      
+      // Para evitar que o botão fique pressionado ao sair dele com o mouse
+      document.addEventListener('mouseup', function() {
+        if (filling) stopFilling();
+        if (draining) stopDraining();
+      });
+    }
+
+    // ========== FUNÇÕES PRINCIPAIS ==========
+    function startFilling() {
+      if (!sensorActive) return;
+      filling = true;
+      fillBtn.classList.add('active');
+      updateFlow();
+      saveLog("Iniciando enchimento", "info");
+    }
+
+    function stopFilling() {
+      filling = false;
+      fillBtn.classList.remove('active');
+      updateFlow();
+      saveLog("Parando enchimento", "info");
+    }
+
+    function startDraining() {
+      if (!sensorActive) return;
+      draining = true;
+      drainBtn.classList.add('active');
+      updateFlow();
+      saveLog("Iniciando drenagem", "info");
+    }
+
+    function stopDraining() {
+      draining = false;
+      drainBtn.classList.remove('active');
+      updateFlow();
+      saveLog("Parando drenagem", "info");
+    }
+
+    function updateFlow() {
+      if (filling && !draining) {
+        flow = 1.5;
+      } else if (!filling && draining) {
+        flow = -1.5;
+      } else {
+        flow = 0.0;
+      }
+      flowRate.textContent = flow.toFixed(1) + " m³/s";
+    }
+
+    function updateWater() {
+      // Atualizar altura visual da água
+      const waterHeight = (waterLevel / MAX_HEIGHT) * 100;
+      water.style.height = waterHeight + '%';
+      
+      // Atualizar indicador numérico
+      currentLevel.textContent = waterLevel.toFixed(1) + 'm';
+      
+      // Atualizar volume
+      const currentVolume = waterLevel * RIVER_WIDTH * RIVER_LENGTH;
+      volumeElement.textContent = Math.round(currentVolume) + ' m³';
+      
+      // Verificar status
+      updateSensorStatus();
+    }
+
+    function updateSensorStatus() {
+      let oldStatus = sensorStatus;
+      
+      if (waterLevel >= CRITICAL_HIGH) {
+        sensorStatus = "CRITICAL";
+        if (oldStatus !== "CRITICAL") {
+          saveLog(`ALERTA: Nível crítico alto (${waterLevel.toFixed(1)}m)`, "warning");
+          showAlert(`Nível crítico ALTO: ${waterLevel.toFixed(1)}m`);
+        }
+      } else if (waterLevel <= CRITICAL_LOW) {
+        sensorStatus = "CRITICAL";
+        if (oldStatus !== "CRITICAL") {
+          saveLog(`ALERTA: Nível crítico baixo (${waterLevel.toFixed(1)}m)`, "warning");
+          showAlert(`Nível crítico BAIXO: ${waterLevel.toFixed(1)}m`);
+        }
+      } else {
+        sensorStatus = "NORMAL";
+        if (oldStatus === "CRITICAL") {
+          saveLog("Nível normalizado", "info");
+          dismissAlertPanel();
+        }
+      }
+    }
+
+    // ========== LOOP DE ANIMAÇÃO ==========
+    function startAnimationLoop() {
+      setInterval(() => {
+        if (filling && waterLevel < MAX_HEIGHT) {
+          waterLevel += 0.05;
+          updateWater();
+          
+          // ✅ ENVIA DADOS PARA O BACKEND A CADA ATUALIZAÇÃO
+          sendSensorData();
+          
+        } else if (draining && waterLevel > MIN_HEIGHT) {
+          waterLevel -= 0.05;
+          updateWater();
+          
+          // ✅ ENVIA DADOS PARA O BACKEND A CADA ATUALIZAÇÃO
+          sendSensorData();
+        }
+        
+        // ✅ Para automaticamente quando atinge os limites
+        if (waterLevel >= MAX_HEIGHT) {
+          filling = false;
+          fillBtn.classList.remove('active');
+          saveLog("Nível máximo atingido. Parando de encher.");
+        }
+        
+        if (waterLevel <= MIN_HEIGHT) {
+          draining = false;
+          drainBtn.classList.remove('active');
+          saveLog("Nível mínimo atingido. Parando de esvaziar.");
+        }
+      }, 100);
+    }
+
+    // ========== REGISTRO E LOGS ==========
+    function saveLog(message, type = "info") {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      const logEntry = document.createElement("div");
+      logEntry.className = "log-entry";
+      
+      let logClass = "";
+      if (type === "warning") {
+        logClass = "warning";
+        message = `<span class="alert-badge">ALERTA</span> ${message}`;
+      }
+      
+      logEntry.innerHTML = `
+        <span class="log-time">[${timeString}]</span>
+        <span class="log-message ${logClass}">${message}</span>
+      `;
+      
+      log.appendChild(logEntry);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function clearLog() {
+      log.innerHTML = "";
+      saveLog("Log limpo", "info");
+    }
+
+    // ========== ALERTAS ==========
+    function showAlert(message) {
+      const alertPanel = document.getElementById("alertPanel");
+      const alertContent = document.getElementById("alertContent");
+      
+      if (alertPanel && alertContent) {
+        alertContent.textContent = message;
+        alertPanel.classList.add("visible");
+        
+        // ✅ Remove o alerta após 5 segundos
+        setTimeout(() => {
+          alertPanel.classList.remove("visible");
+        }, 5000);
+      }
+    }
+
+    function dismissAlertPanel() {
+      alertPanel.classList.remove("visible");
+      alertActive = false;
+    }
+
+    // ========== SALVAMENTO AUTOMÁTICO ==========
+    function startAutoSave() {
+      autoSaveInterval = setInterval(autoSaveData, AUTO_SAVE_INTERVAL);
+    }
+
+    async function autoSaveData() {
+      const now = new Date();
+      const volume = waterLevel * RIVER_WIDTH * RIVER_LENGTH;
+      
+      const data = {
+        timestamp: now,
+        level: waterLevel,
+        flow: flow,
+        volume: volume,
+        status: sensorStatus,
+        isCritical: sensorStatus === "CRITICAL"
+      };
+      
+      dataLog.push(data);
+      updateDataTable();
+      
+      // ✅ NOTIFICAÇÕES SOMENTE para status crítico
+      if (sensorStatus === "CRITICAL") {
+        showBrowserNotification("🚨 ALERTA CRÍTICO", `Nível da água: ${waterLevel.toFixed(2)}m - Tome ações necessárias!`);
+        vibrateDevice();
+      }
+    }
+
+    function updateDataTable() {
+      // Limitar a exibir apenas os últimos 10 registros
+      const recentData = dataLog.slice(-10);
+      
+      dataTableBody.innerHTML = "";
+      
+      recentData.forEach(data => {
+        const row = document.createElement("tr");
+        if (data.isCritical) {
+          row.classList.add("alert-row");
+        }
+        
+        const timeString = data.timestamp.toLocaleTimeString();
+        const dateString = data.timestamp.toLocaleDateString();
+        
+        row.innerHTML = `
+          <td>${dateString} ${timeString}</td>
+          <td>${data.level.toFixed(2)}</td>
+          <td>${data.flow.toFixed(1)}</td>
+          <td>${Math.round(data.volume)}</td>
+          <td>${data.isCritical ? '<span class="alert-indicator">CRÍTICO</span>' : 'Normal'}</td>
+        `;
+        
+        dataTableBody.appendChild(row);
+      });
+    }
+
+    // ========== ENVIAR DADOS PARA BACKEND ==========
+    async function sendSensorData() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/sensors/${SENSOR_ID}/data?nivel=${waterLevel}&fluxo=${flow}&status=${sensorStatus}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        
+        if (response.ok) {
+          console.log("✅ Dados enviados para o backend");
+        }
+      } catch (error) {
+        console.error('❌ Erro ao enviar dados:', error);
+      }
+    }
+
+    // ========== NOTIFICAÇÕES DO NAVEGADOR ==========
+    function showBrowserNotification(title, message) {
+      // ✅ 1. Primeiro mostra na página (sempre funciona)
+      showAlert(message);
+      
+      // ✅ 2. Tenta notificação do navegador
+      if (!('Notification' in window)) {
+        console.log('Este navegador não suporta notificações');
+        return;
+      }
+      
+      // ✅ 3. Se já tem permissão, mostra notificação
+      if (Notification.permission === 'granted') {
+        createNotification(title, message);
+      } 
+      // ✅ 4. If não tem permissão, pede de forma INTELIGENTE
+      else if (Notification.permission !== 'denied') {
+        // ✅ Só pede permissão quando realmente for mostrar algo importante
+        if (sensorStatus === "CRITICAL") {
+          Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+              createNotification(title, message);
+            }
+          });
+        }
+      }
+    }
+
+    // ✅ Função auxiliar para criar notificação
+    function createNotification(title, message) {
+      const notification = new Notification(title, { 
+        body: message,
+        icon: 'https://cdn-icons-png.flaticon.com/512/869/869869.png', // Ícone de água
+        badge: 'https://cdn-icons-png.flaticon.com/512/869/869869.png'
+      });
+      
+      // ✅ Foca na janela quando clica na notificação
+      notification.onclick = function() {
+        window.focus();
+        notification.close();
+      };
+      
+      // ✅ Fecha automaticamente após 5 segundos
+      setTimeout(() => {
+        notification.close();
+      }, 5000);
+    }
+
+    // ✅ Função de vibração MELHORADA
+    function vibrateDevice() {
+      if ('vibrate' in navigator) {
+        // Padrão de vibração para alerta crítico
+        const pattern = [200, 100, 200, 100, 200];
+        navigator.vibrate(pattern);
+      }
+    }
+
+    // ========== EXPORTAÇÃO DE DADOS ==========
+    function exportData() {
+      if (dataLog.length === 0) {
+        saveLog("Nenhum dado para exportar", "info");
+        return;
+      }
+      
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Data,Hora,Nível (m),Vazão (m³/s),Volume (m³),Status\n";
+      
+      dataLog.forEach(data => {
+        const date = data.timestamp.toLocaleDateString();
+        const time = data.timestamp.toLocaleTimeString();
+        const status = data.isCritical ? "CRÍTICO" : "NORMAL";
+        csvContent += `${date},${time},${data.level.toFixed(2)},${data.flow.toFixed(1)},${Math.round(data.volume)},${status}\n`;
+      });
+      
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "dados_sensor.csv");
+      document.body.appendChild(link);
+      
+      link.click();
+      document.body.removeChild(link);
+      saveLog("Dados exportados para CSV", "info");
+    }
+
+    // ========== CONFIGURAÇÃO ==========
+    function showConfigModal() {
+      document.getElementById('sensorId').value = SENSOR_ID;
+      document.getElementById('apiUrl').value = API_BASE_URL;
+      document.getElementById('criticalHigh').value = CRITICAL_HIGH;
+      document.getElementById('criticalLow').value = CRITICAL_LOW;
+      configModal.style.display = 'flex';
+    }
+
+    function hideConfigModal() {
+      configModal.style.display = 'none';
+    }
+
+    function saveConfiguration() {
+      SENSOR_ID = document.getElementById('sensorId').value;
+      API_BASE_URL = document.getElementById('apiUrl').value;
+      CRITICAL_HIGH = parseFloat(document.getElementById('criticalHigh').value);
+      CRITICAL_LOW = parseFloat(document.getElementById('criticalLow').value);
+      
+      saveConfigToStorage();
+      hideConfigModal();
+      saveLog("Configurações salvas", "info");
+    }
+</script>
+</body>
+</html>
