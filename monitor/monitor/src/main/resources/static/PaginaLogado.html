@@ -1,0 +1,1231 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Monitor Hídrico (2022) — Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+          --bg: #f8fbfd;
+          --card: #ffffffcc;
+          --accent: #00b4c6;
+          --muted: #7d8c93;
+          --error: #ff7a7a;
+          --success: #2ecc71;
+          --soft-shadow: 0 10px 25px rgba(10, 60, 80, 0.06);
+          --radius: 20px;
+          font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        html, body {
+          height: 100%;
+          margin: 0;
+          background: linear-gradient(180deg, #e9faff 0%, #fdfefe 100%);
+        }
+
+        .wrap {
+          max-width: 1100px;
+          margin: 36px auto;
+          padding: 28px;
+          background: var(--card);
+          border-radius: var(--radius);
+          box-shadow: var(--soft-shadow);
+          display: grid;
+          grid-template-columns: 1fr 360px;
+          gap: 24px;
+          backdrop-filter: blur(6px);
+        }
+
+        header {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
+
+        .brand {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        /* .drop {
+          width: 42px;
+          height: 42px;
+          background: linear-gradient(180deg, #00c0d9, #00aebf);
+          border-radius: 50%;
+          box-shadow: inset 0 -8px 18px rgba(255, 255, 255, 0.2);
+          
+        } */
+
+        .brand h1 {
+          font-size: 20px;
+          margin: 0;
+          color: #0e3940;
+        }
+
+        .btn {
+          display: inline-block;
+          padding: 10px 18px;
+          border-radius: 12px;
+          border: none;
+          background: var(--accent);
+          color: #fff;
+          text-decoration: none;
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+          background: #00a3b4;
+          transform: translateY(-1px);
+          box-shadow: 0 3px 8px rgba(0, 174, 191, 0.25);
+        }
+
+        .btn.ghost {
+          background: transparent;
+          color: var(--accent);
+          border: 2px solid rgba(0, 174, 191, 0.12);
+        }
+
+        .btn.ghost:hover {
+          background: rgba(0, 174, 191, 0.08);
+        }
+
+        .btn.danger {
+          background: var(--error);
+        }
+
+        .btn.danger:hover {
+          background: #e86565;
+        }
+
+        .btn.small {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+
+        h2 {
+          font-size: 36px;
+          margin: 6px 0 8px;
+          color: #123;
+          letter-spacing: -0.02em;
+        }
+
+        p.lead {
+          margin: 0;
+          color: var(--muted);
+          font-size: 15px;
+        }
+
+        .hero {
+          background: #f9feff;
+          border-radius: 16px;
+          padding: 18px;
+          box-shadow: var(--soft-shadow);
+          border: 1px solid rgba(2, 50, 60, 0.03);
+        }
+
+        #map-container {
+          width: 100%;
+          height: 260px;
+          border-radius: 12px;
+          z-index: 1;
+        }
+
+        .map-legend {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          margin-top: 10px;
+          font-size: 13px;
+          color: var(--muted);
+        }
+
+        .legend-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+        }
+
+        .green { background: #7ed957; }
+        .yellow { background: #ffd36b; }
+        .red { background: #ff8a7a; }
+
+        .card {
+          background: var(--card);
+          border-radius: 14px;
+          padding: 18px;
+          margin-top: 18px;
+          box-shadow: var(--soft-shadow);
+        }
+
+        /* Ícones das notificações */
+        .notif-item .icon {
+          width: 44px;
+          height: 44px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          flex-shrink: 0;
+        }
+
+        .icon.warn {
+          background: #fff4d9;
+          color: #b47b00;
+          border: 1px solid rgba(180, 123, 0, 0.08);
+        }
+
+        .icon.info {
+          background: #eef6ff;
+          color: #1f87d1;
+          border: 1px solid rgba(31, 135, 209, 0.06);
+        }
+
+        .notif-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 12px;
+          border-radius: 10px;
+          background: linear-gradient(90deg, #fff, #fbffff);
+          margin-bottom: 8px;
+        }
+
+        .notif-item h4 { margin: 0; font-size: 16px; }
+        .notif-item p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+
+        .side {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+        }
+
+        .profile {
+          background: linear-gradient(180deg, #ffffff, #f9feff);
+          padding: 18px;
+          border-radius: 14px;
+          box-shadow: var(--soft-shadow);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .avatar {
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          background: linear-gradient(180deg, #e6f5fa, #dff3fa);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 30px;
+          color: var(--accent);
+          background-size: cover;
+          background-position: center;
+        }
+
+        .profile-actions {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        footer {
+          grid-column: 1 / -1;
+          margin-top: 8px;
+          text-align: center;
+          color: var(--muted);
+          font-size: 13px;
+        }
+
+        .toast {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: var(--success);
+          color: white;
+          padding: 12px 20px;
+          border-radius: 8px;
+          z-index: 1002;
+          box-shadow: var(--soft-shadow);
+          animation: slideIn 0.3s ease-out;
+        }
+
+        /* Modal styles */
+        .modal-back {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.5);
+          display: none;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        }
+
+        .modal {
+          background: white;
+          padding: 25px;
+          border-radius: 15px;
+          width: 90%;
+          max-width: 400px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal h3 {
+          margin: 0 0 15px 0;
+          color: #0e3940;
+        }
+
+        .field {
+          margin-bottom: 15px;
+        }
+
+        .field label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: var(--muted);
+          font-size: 14px;
+        }
+
+        .field input {
+          width: 100%;
+          padding: 10px;
+          border: 2px solid #e9ecef;
+          border-radius: 8px;
+          font-size: 14px;
+          transition: border-color 0.3s;
+        }
+
+        .field input:focus {
+          border-color: var(--accent);
+          outline: none;
+        }
+
+        .modal-actions {
+          display: flex;
+          gap: 10px;
+          justify-content: flex-end;
+          margin-top: 20px;
+        }
+
+        .image-preview {
+          margin-top: 10px;
+          text-align: center;
+          display: none;
+        }
+
+        .image-preview img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 3px solid var(--accent);
+        }
+
+        @keyframes slideIn {
+          from { transform: translateX(100px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width:980px) {
+          .wrap { grid-template-columns: 1fr; max-width: 900px; }
+          .side { order: 2; }
+        }
+
+                /* NOVO BLOCO PARA LOGO */
+        .logo-box {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="wrap" id="app">
+    <header>
+        <div class="brand">
+           <div class="logo-box">
+    <img src="logobranca.png" class="logo-img" alt="Logo">
+</div>
+
+            <div>
+                <h1>Monitor Hídrico (2022)</h1>
+                <div style="font-size:12px;color:var(--muted)">Monitoramento de sensores</div>
+            </div>
+        </div>
+        <button class="btn ghost small" onclick="logoutUser()">
+            <i class="fa-solid fa-right-from-bracket" style="margin-right:6px"></i> Sair
+        </button>
+    </header>
+
+    <section class="main">
+        <h2 id="welcomeTitle">Olá, Maria!</h2>
+        <p class="lead" id="welcomeSub">Aqui está o resumo do seu sistema de monitoramento</p>
+
+        <div class="hero">
+            <div id="map-container"></div>
+            <div class="map-legend">
+                <div class="legend-dot green"></div><div>Normal</div>
+                <div class="legend-dot yellow"></div><div>Alerta</div>
+                <div class="legend-dot red"></div><div>Crítico</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <h3 style="margin:0">Notificações</h3>
+                <a href="#" style="color:var(--accent);text-decoration:none;font-size:14px">Ver todos</a>
+            </div>
+
+            <div style="margin-top:12px">
+                <div class="notif-item">
+                    <div class="icon warn">!</div>
+                    <div>
+                        <h4>Alerta de Nível Crítico</h4>
+                        <p>Sensor Coronel Veiga Gulf — Nível: <strong>85%</strong><br><small>Há 15 minutos</small></p>
+                    </div>
+                </div>
+                <div class="notif-item">
+                    <div class="icon info">i</div>
+                    <div>
+                        <h4>Novo Sensor Conectado</h4>
+                        <p>Sensor "Rua da Imperatriz Obelico" foi adicionado<br><small>Há 2 horas</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <aside class="side">
+        <div class="profile">
+            <div class="avatar" id="avatar">M</div>
+            <div style="text-align:center">
+                <div id="profileName" style="font-weight:700">Maria Silva</div>
+                <div id="profileEmail" style="color:var(--muted);font-size:13px">maria@email.com</div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="btn ghost small" onclick="openEditModal('name')">Alterar Nome</button>
+                <button class="btn ghost small" onclick="openEditModal('password')">Alterar Senha</button>
+                <button class="btn ghost small" onclick="openEditModal('picture')">Alterar Foto de Perfil</button>
+                <button class="btn danger small" onclick="deleteAccount()">Excluir Conta</button>
+            </div>
+        </div>
+
+        <div class="sensors">
+            <h3>Sensores</h3>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+                <div>
+                    <div style="color:var(--muted)">Sensores Ativos</div>
+                    <div class="count" id="activeCount" style="font-size:28px;font-weight:700;color:#0c5460">12</div>
+                </div>
+                <button class="btn ghost" id="btnVerMapa">Ver Mapa</button>
+            </div>
+        </div>
+    </aside>
+
+    <footer>Monitor Hídrico (2022) </footer>
+</div>
+
+<!-- Modal de Edição -->
+<div id="editModal" class="modal-back">
+    <div class="modal">
+        <h3 id="modalTitle">Editar Perfil</h3>
+
+        <div id="nameFields">
+            <div class="field">
+                <label for="editName">Nome</label>
+                <input type="text" id="editName" placeholder="Seu nome completo">
+            </div>
+        </div>
+
+        <div id="passwordFields" style="display: none;">
+            <!-- Campos de senha serão adicionados dinamicamente -->
+        </div>
+
+        <div id="pictureFields" style="display: none;">
+            <div class="field">
+                <label for="editPicture">Foto de Perfil</label>
+                <input type="file" id="editPicture" accept="image/*">
+                <div class="image-preview" id="imagePreview">
+                    <img id="previewImg" src="">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn ghost" onclick="closeEditModal()">Cancelar</button>
+            <button class="btn" onclick="saveChanges()">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase App (obrigatório) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<!-- Firebase Messaging (para notificações) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+
+<script>
+    // 🔥 CONFIGURAÇÃO DO FIREBASE - SUBSTITUA COM SUAS CREDENCIAIS
+     const firebaseConfig = {
+        apiKey: "AIzaSyAZf2jzyPK0XcuNYerbiNrHnUUxUnbU26E",
+        authDomain: "monitorhidrico-a62bf.firebaseapp.com",
+        projectId: "monitorhidrico-a62bf",
+        storageBucket: "monitorhidrico-a62bf.firebasestorage.app",
+        messagingSenderId: "195444255449",
+        appId: "1:195444255449:web:f860e7e22e5e79957aecc8"
+      };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    // Serviço de Notificações
+    class NotificationService {
+        constructor() {
+            this.API_BASE_URL = "http://localhost:8081/api";
+            this.token = localStorage.getItem('mh_token');
+        }
+        
+
+        // Registrar token FCM no backend
+        async registerFCMToken(fcmToken) {
+            try {
+                const userToken = localStorage.getItem('mh_token');
+                if (!userToken) {
+                    console.log('Usuário não logado, token FCM não registrado');
+                    return;
+                }
+
+                const response = await fetch(`${this.API_BASE_URL}/notifications/register-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userToken}`
+                    },
+                    body: JSON.stringify({ token: fcmToken })
+                });
+
+                if (response.ok) {
+                    console.log('✅ Token FCM registrado com sucesso');
+                } else {
+                    console.error('❌ Erro ao registrar token FCM');
+                }
+            } catch (error) {
+                console.error('💥 Erro ao registrar token FCM:', error);
+            }
+        }
+
+        // Solicitar permissão para notificações
+        async requestNotificationPermission() {
+            try {
+                console.log('🔔 Solicitando permissão para notificações...');
+
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    console.log('✅ Permissão para notificações concedida');
+                    await this.getFCMToken();
+                } else {
+                    console.log('❌ Permissão para notificações negada');
+                }
+            } catch (error) {
+                console.error('💥 Erro ao solicitar permissão:', error);
+            }
+        }
+
+        // Obter token FCM
+        async getFCMToken() {
+            try {
+                console.log('📱 Obtendo token FCM...');
+
+                // Verificar se o service worker está registrado
+                if (!('serviceWorker' in navigator)) {
+                    console.log('❌ Service Worker não suportado');
+                    return;
+                }
+
+                // Registrar service worker para notificações
+                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                console.log('✅ Service Worker registrado:', registration);
+
+                // Obter token
+                const currentToken = await messaging.getToken({
+                    serviceWorkerRegistration: registration,
+                    vapidKey: 'SUA_VAPID_KEY' // Opcional - você pode gerar depois
+                });
+
+                if (currentToken) {
+                    console.log('✅ Token FCM obtido:', currentToken.substring(0, 20) + '...');
+                    await this.registerFCMToken(currentToken);
+
+                    // Salvar no localStorage para uso posterior
+                    localStorage.setItem('fcm_token', currentToken);
+                } else {
+                    console.log('❌ Não foi possível obter token FCM');
+                }
+            } catch (error) {
+                console.error('💥 Erro ao obter token FCM:', error);
+            }
+        }
+
+        // Configurar listener para mensagens em foreground
+        setupForegroundMessages() {
+            messaging.onMessage((payload) => {
+                console.log('📨 Notificação recebida em foreground:', payload);
+
+                // Mostrar notificação local
+                this.showLocalNotification(
+                    payload.notification?.title || 'MonitorHídrico',
+                    payload.notification?.body || 'Nova notificação'
+                );
+            });
+        }
+
+        // Mostrar notificação local
+        showLocalNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: '/icon.png', // Adicione um ícone
+                    badge: '/badge.png'
+                });
+            }
+        }
+    }
+
+    // Instância global do serviço
+    const notificationService = new NotificationService();
+
+    // Inicializar notificações após login bem-sucedido
+    function initNotificationsAfterLogin() {
+        console.log('🚀 Inicializando sistema de notificações...');
+
+        // Esperar um pouco para garantir que o token JWT está salvo
+        setTimeout(() => {
+            notificationService.requestNotificationPermission();
+            notificationService.setupForegroundMessages();
+        }, 1000);
+    }
+
+    // 🔥 MODIFIQUE O LOGIN EXISTENTE - No seu código atual, após login bem-sucedido:
+    // No trecho onde faz o login, após "if (response.ok) {", adicione:
+
+    /*
+    if (response.ok) {
+        // ... código existente do login ...
+
+        // ✅ ADICIONE ESTA LINHA:
+        initNotificationsAfterLogin();
+    }
+    */
+
+    // Inicializar Service Worker quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar se já está logado e inicializar notificações
+        const token = localStorage.getItem('mh_token');
+        if (token) {
+            console.log('🔄 Usuário já logado, inicializando notificações...');
+            initNotificationsAfterLogin();
+        }
+
+        // Registrar service worker para notificações em background
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/firebase-messaging-sw.js')
+                .then(function(registration) {
+                    console.log('✅ Service Worker registrado com sucesso:', registration);
+                })
+                .catch(function(error) {
+                    console.log('❌ Erro ao registrar Service Worker:', error);
+                });
+        }
+    });
+    // No PaginaLogado.html, adicione esta parte específica:
+    document.addEventListener('DOMContentLoaded', function() {
+        // Usuário já está logado nesta página, então inicializar notificações
+        console.log('🔄 Inicializando notificações na página logada...');
+        initNotificationsAfterLogin();
+
+        // Adicionar ícone de notificações no header
+        addNotificationIcon();
+    });
+
+    // Adicionar ícone de notificações na interface
+    function addNotificationIcon() {
+        const header = document.querySelector('header');
+        if (!header) return;
+
+        const notificationHTML = `
+            <div class="notification-icon" style="position: relative; margin-right: 15px; cursor: pointer;">
+                <i class="fas fa-bell" style="font-size: 20px; color: var(--accent);"></i>
+                <div class="notification-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #ff4757; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; justify-content: center; align-items: center;"></div>
+            </div>
+        `;
+
+        // Inserir antes do botão de sair
+        const logoutBtn = header.querySelector('.btn.ghost');
+        if (logoutBtn) {
+            logoutBtn.insertAdjacentHTML('beforebegin', notificationHTML);
+
+            // Adicionar evento de clique
+            const notificationIcon = header.querySelector('.notification-icon');
+            notificationIcon.addEventListener('click', function() {
+                alert('Abrindo notificações...'); // Você pode implementar um modal depois
+            });
+        }
+    }
+</script>
+<script>
+    let currentEditType = '';
+    let currentUser = null;
+    let map;
+    // Verificar autenticação ao carregar a página
+    // Atualize o event listener do DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('mh_token');
+    const user = JSON.parse(localStorage.getItem('mh_user') || 'null');
+    
+    if (!token || !user) {
+        alert('Por favor, faça login novamente.');
+        window.location.href = 'LoginPage.html';
+        return;
+    }
+
+    currentUser = user;
+    updateUserInterface();
+    await loadUserData();
+    await initMap(); // Mudei de initMap() para await initMap()
+});
+
+    function updateUserInterface() {
+        if (!currentUser) return;
+        
+        document.getElementById('profileName').textContent = currentUser.nome;
+        document.getElementById('profileEmail').textContent = currentUser.email;
+        document.getElementById('welcomeTitle').textContent = `Olá, ${currentUser.nome.split(' ')[0]}!`;
+        
+        // Usar primeira letra do nome como avatar
+        const firstLetter = currentUser.nome.charAt(0).toUpperCase();
+        document.getElementById('avatar').textContent = firstLetter;
+    }
+
+    async function loadUserData() {
+        try {
+            const token = localStorage.getItem('mh_token');
+            const response = await fetch('http://localhost:8081/api/users/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                currentUser = userData;
+                updateUserInterface();
+            }
+        } catch (error) {
+            console.error('Erro ao carregar dados do usuário:', error);
+        }
+    }
+
+    function logoutUser() {
+        localStorage.removeItem('mh_token');
+        localStorage.removeItem('mh_user');
+        showToast('Saindo...');
+        setTimeout(() => window.location.href = 'LoginPage.html', 1200);
+    }
+
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function openEditModal(type) {
+        currentEditType = type;
+        const modal = document.getElementById('editModal');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        // Esconder todos os campos
+        document.getElementById('nameFields').style.display = 'none';
+        document.getElementById('passwordFields').style.display = 'none';
+        document.getElementById('pictureFields').style.display = 'none';
+        
+        // Configurar modal baseado no tipo
+        switch(type) {
+            case 'name':
+                modalTitle.textContent = 'Alterar Nome';
+                document.getElementById('nameFields').style.display = 'block';
+                document.getElementById('editName').value = currentUser.nome;
+                break;
+            case 'password':
+                modalTitle.textContent = 'Alterar Senha';
+                document.getElementById('passwordFields').style.display = 'block';
+                document.getElementById('editPassword').value = '';
+                document.getElementById('editConfirmPassword').value = '';
+                break;
+            case 'picture':
+                modalTitle.textContent = 'Alterar Foto de Perfil';
+                document.getElementById('pictureFields').style.display = 'block';
+                document.getElementById('editPicture').value = '';
+                document.getElementById('imagePreview').style.display = 'none';
+                break;
+        }
+        
+        modal.style.display = 'flex';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+   async function saveChanges() {
+    const token = localStorage.getItem('mh_token');
+    
+    if (!token) {
+        showToast('Token não encontrado. Faça login novamente.');
+        return;
+    }
+    
+    try {
+        switch(currentEditType) {
+            case 'name':
+                await updateName(token);
+                break;
+                
+            case 'password':
+                await updatePassword(token);
+                break;
+                
+            case 'picture':
+                showToast('Upload de imagem em desenvolvimento');
+                break;
+        }
+    } catch (error) {
+        console.error('Erro ao salvar:', error);
+        showToast('Erro ao salvar alterações');
+    }
+}
+
+async function updateName(token) {
+    const newName = document.getElementById('editName').value.trim();
+    
+    if (!newName) {
+        showToast('Nome é obrigatório!');
+        return;
+    }
+    
+    try {
+        const response = await fetch('http://localhost:8081/api/users/me/name', {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nome: newName })
+        });
+
+        if (response.ok) {
+            const userData = await response.json();
+            currentUser.nome = userData.nome;
+            updateUserInterface();
+            showToast('Nome atualizado com sucesso!');
+            closeEditModal();
+        } else {
+            const error = await response.json();
+            showToast(error.message || 'Erro ao atualizar nome');
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        showToast('Erro de conexão com o servidor');
+    }
+}
+
+async function updatePassword(token) {
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('editPassword').value;
+    const confirmPassword = document.getElementById('editConfirmPassword').value;
+    
+    if (!currentPassword) {
+        showToast('Senha atual é obrigatória!');
+        return;
+    }
+    
+    if (!newPassword || newPassword.length < 6) {
+        showToast('Nova senha deve ter pelo menos 6 caracteres!');
+        return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+        showToast('As senhas não coincidem!');
+        return;
+    }
+    
+    try {
+        const response = await fetch('http://localhost:8081/api/users/me/password', {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                currentPassword: currentPassword,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword
+            })
+        });
+
+        if (response.ok) {
+            showToast('Senha alterada com sucesso!');
+            // Limpar campos
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('editPassword').value = '';
+            document.getElementById('editConfirmPassword').value = '';
+            closeEditModal();
+        } else {
+            const error = await response.json();
+            showToast(error.message || 'Erro ao alterar senha');
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        showToast('Erro de conexão com o servidor');
+    }
+}
+
+async function deleteAccount() {
+    const password = prompt('Para confirmar a exclusão da sua conta, digite sua senha:');
+    
+    if (!password) {
+        return;
+    }
+    
+    if (!confirm('⚠️ ATENÇÃO: Tem certeza que deseja excluir sua conta? TODOS os seus dados serão perdidos permanentemente e esta ação NÃO pode ser desfeita.')) {
+        return;
+    }
+    
+    const token = localStorage.getItem('mh_token');
+    
+    try {
+        console.log('🗑️ Iniciando exclusão da conta...');
+        
+        const response = await fetch('http://localhost:8081/api/users/me', {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password: password })
+        });
+
+        console.log('📨 Resposta do servidor:', response.status, response.statusText);
+        
+        if (response.ok) {
+            const result = await response.json();
+            console.log('✅ Conta excluída:', result);
+            showToast('Conta excluída com sucesso!');
+            
+            // Limpar localStorage e redirecionar para login
+            setTimeout(() => {
+                localStorage.removeItem('mh_token');
+                localStorage.removeItem('mh_user');
+                window.location.href = 'LoginPage.html';
+            }, 2000);
+        } else {
+            const error = await response.json();
+            console.error('❌ Erro ao excluir conta:', error);
+            showToast(error.message || `Erro ao excluir conta: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('💥 Erro na requisição:', error);
+        showToast('Erro de conexão com o servidor');
+    }
+}
+
+// Atualizar a função openEditModal para incluir campos de senha atual
+function openEditModal(type) {
+    currentEditType = type;
+    const modal = document.getElementById('editModal');
+    const modalTitle = document.getElementById('modalTitle');
+    
+    // Limpar todos os campos primeiro
+    const fields = ['nameFields', 'passwordFields', 'pictureFields'];
+    fields.forEach(field => {
+        document.getElementById(field).style.display = 'none';
+    });
+    
+    switch(type) {
+        case 'name':
+            modalTitle.textContent = 'Alterar Nome';
+            document.getElementById('nameFields').style.display = 'block';
+            document.getElementById('editName').value = currentUser.nome || '';
+            break;
+            
+        case 'password':
+            modalTitle.textContent = 'Alterar Senha';
+            document.getElementById('passwordFields').style.display = 'block';
+            
+            // Garantir que os campos existam
+            const passwordFields = document.getElementById('passwordFields');
+            passwordFields.innerHTML = `
+                <div class="field">
+                    <label for="currentPassword">Senha Atual *</label>
+                    <input type="password" id="currentPassword" placeholder="Digite sua senha atual" required>
+                </div>
+                <div class="field">
+                    <label for="editPassword">Nova Senha *</label>
+                    <input type="password" id="editPassword" placeholder="Mínimo 6 caracteres" required>
+                </div>
+                <div class="field">
+                    <label for="editConfirmPassword">Confirmar Nova Senha *</label>
+                    <input type="password" id="editConfirmPassword" placeholder="Digite novamente" required>
+                </div>
+            `;
+            break;
+            
+        case 'picture':
+            modalTitle.textContent = 'Alterar Foto de Perfil';
+            document.getElementById('pictureFields').style.display = 'block';
+            break;
+    }
+    
+    modal.style.display = 'flex';
+}
+
+
+
+    // Mapa
+    // Inicializar mapa
+async function initMap() {
+    map = L.map("map-container").setView([-23.5505, -46.6333], 11);
+
+    // Fundo do mapa
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    // Carregar sensores inicialmente
+    await loadSensorsData();
+    
+    // Iniciar polling para atualizações
+    startSensorsPolling();
+}
+
+// Polling para atualizações automáticas
+function startSensorsPolling() {
+    // Atualizar a cada 3 segundos
+    setInterval(loadSensorsData, 3000);
+}
+
+window.onload = initMap;
+        // Botão Ver Mapa
+        document.getElementById('btnVerMapa').addEventListener('click', function() {
+            showToast('Abrindo mapa em tela cheia...');
+        });
+
+        setInterval(initMap, 60000); // atualiza a cada 60 segundos
+</script>
+<script>
+    async function carregarSensores() {
+      try {
+        const resposta = await fetch("http://localhost:8081/api/sensors");
+        const sensores = await resposta.json();
+
+        sensores.forEach(sensor => {
+          if (sensor.ativo) {
+            L.marker([sensor.latitude, sensor.longitude])
+              .addTo(map)
+              .bindPopup(`<b>${sensor.nome}</b><br>Status: Ativo`);
+          }
+        });
+      } catch (erro) {
+        console.error("Erro ao carregar sensores:", erro);
+      }
+    }
+
+    // Monitorar mudanças nos sensores
+    function setupSensorsUpdateListener() {
+        // Verificar atualizações a cada 5 segundos
+        setInterval(loadSensorsData, 5000);
+
+        // Escutar eventos de atualização
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'sensors_last_update') {
+                loadSensorsData();
+            }
+        });
+
+        // Escutar eventos customizados
+        window.addEventListener('sensorsUpdated', () => {
+            loadSensorsData();
+        });
+    }
+
+    // Carregar dados dos sensores
+    async function loadSensorsData() {
+        try {
+            const response = await fetch("http://localhost:8081/api/sensors");
+            if (!response.ok) {
+                console.error("Erro ao buscar sensores:", response.status);
+                return;
+            }
+
+            const sensores = await response.json();
+            console.log("Sensores carregados:", sensores);
+            updateMapWithSensors(sensores);
+            updateSensorCount(sensores);
+        } catch (err) {
+            console.error("Erro ao carregar sensores:", err);
+        }
+    }
+
+    // Atualizar mapa com sensores
+    // Atualizar mapa com sensores
+    function updateMapWithSensors(sensores) {
+        // Limpar marcadores existentes
+        map.eachLayer(layer => {
+            if (layer instanceof L.CircleMarker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        // Adicionar novos marcadores
+        sensores
+            .filter(s => s.ativo && s.latitude && s.longitude)
+            .forEach(s => {
+                const color = getStatusColor(s.status);
+
+                const marker = L.circleMarker([s.latitude, s.longitude], {
+                    color: color,
+                    fillColor: color,
+                    radius: 8,
+                    fillOpacity: 0.8,
+                    weight: 2
+                }).addTo(map);
+
+                marker.bindPopup(`
+                    <div style="min-width: 200px;">
+                        <h4 style="margin: 0 0 8px;">${s.nome}</h4>
+                        <p style="margin: 0 0 5px;"><strong>Localização:</strong> ${s.localicao || "Sem localização"}</p>
+                        <p style="margin: 0 0 5px;"><strong>Status:</strong> ${s.status}</p>
+                        <p style="margin: 0;"><strong>Coordenadas:</strong> ${s.latitude.toFixed(4)}, ${s.longitude.toFixed(4)}</p>
+                    </div>
+                `);
+            });
+    }
+
+    function getStatusColor(status) {
+        switch(status) {
+            case "NORMAL": return "green";
+            case "ATENCAO": return "orange";
+            case "ALERTA": return "red";
+            case "CRITICO": return "purple";
+            default: return "gray";
+        }
+    }
+
+    function updateSensorCount(sensores) {
+        const activeCount = sensores.filter(s => s.ativo).length;
+        const countElement = document.getElementById('activeCount');
+        if (countElement) {
+            countElement.textContent = activeCount;
+        }
+    }
+
+
+    // Inicializar o listener quando a página carregar
+    document.addEventListener('DOMContentLoaded', () => {
+        setupSensorsUpdateListener();
+        loadSensorsData(); // Carregar dados inicialmente
+    });
+
+    document.addEventListener("DOMContentLoaded", carregarSensores);
+
+
+    // Verifica alertas a cada 5 segundos
+function verificarAlertas() {
+    setInterval(() => {
+        const ultimoAlerta = localStorage.getItem('ultimoAlerta');
+        
+        if (ultimoAlerta) {
+            const alerta = JSON.parse(ultimoAlerta);
+            const agora = new Date().getTime();
+            
+            // Se o alerta foi criado há menos de 10 segundos
+            if (agora - alerta.timestamp < 10000) {
+                mostrarAlertaNaPagina(alerta);
+            }
+            
+            // Remove o alerta depois de mostrado
+            localStorage.removeItem('ultimoAlerta');
+        }
+    }, 5000);
+}
+
+// Mostra alerta na página
+function mostrarAlertaNaPagina(alerta) {
+    // Cria um popup simples
+    const popup = document.createElement('div');
+    popup.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff4757;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    `;
+    
+    popup.innerHTML = `
+        <strong>🚨 ${alerta.titulo}</strong>
+        <p>${alerta.mensagem}</p>
+        <small>${new Date().toLocaleTimeString()}</small>
+    `;
+    
+    document.body.appendChild(popup);
+    
+    // Remove depois de 5 segundos
+    setTimeout(() => {
+        popup.remove();
+    }, 5000);
+}
+
+// Inicia quando a página carrega
+document.addEventListener('DOMContentLoaded', function() {
+    verificarAlertas();
+});
+</script>
+</body>
+</html>

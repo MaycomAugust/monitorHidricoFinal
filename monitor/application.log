@@ -1,0 +1,242 @@
+2025-11-06T10:19:14.981-03:00  INFO 28944 --- [demo] [main] com.example.monitor.MonitorApplication   : Starting MonitorApplication using Java 25 with PID 28944 (C:\Users\davic\Downloads\monitor\monitor\target\classes started by davic in C:\Users\davic\Downloads\monitor)
+2025-11-06T10:19:14.985-03:00  INFO 28944 --- [demo] [main] com.example.monitor.MonitorApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-06T10:19:15.990-03:00  INFO 28944 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-06T10:19:16.057-03:00  INFO 28944 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 5 JPA repository interfaces.
+2025-11-06T10:19:16.619-03:00  INFO 28944 --- [demo] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-06T10:19:16.633-03:00  INFO 28944 --- [demo] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-06T10:19:16.633-03:00  INFO 28944 --- [demo] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-11-06T10:19:16.697-03:00  INFO 28944 --- [demo] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-06T10:19:16.697-03:00  INFO 28944 --- [demo] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1670 ms
+2025-11-06T10:19:16.779-03:00  INFO 28944 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-06T10:19:17.077-03:00  INFO 28944 --- [demo] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/monitorhidrico user=SA
+2025-11-06T10:19:17.079-03:00  INFO 28944 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-06T10:19:17.198-03:00  INFO 28944 --- [demo] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-06T10:19:17.270-03:00  INFO 28944 --- [demo] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-11-06T10:19:17.312-03:00  INFO 28944 --- [demo] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-11-06T10:19:17.632-03:00  INFO 28944 --- [demo] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-06T10:19:17.691-03:00  WARN 28944 --- [demo] [main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-06T10:19:17.707-03:00  INFO 28944 --- [demo] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-06T10:19:18.521-03:00  INFO 28944 --- [demo] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-06T10:19:18.569-03:00  INFO 28944 --- [demo] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-06T10:19:18.904-03:00  INFO 28944 --- [demo] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-06T10:19:19.441-03:00  WARN 28944 --- [demo] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-06T10:19:19.638-03:00  WARN 28944 --- [demo] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 13567471-d52e-42d9-a3ee-5581f133722a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-11-06T10:19:19.646-03:00  INFO 28944 --- [demo] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-11-06T10:19:19.941-03:00  INFO 28944 --- [demo] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/monitorhidrico'
+2025-11-06T10:19:19.990-03:00  WARN 28944 --- [demo] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-11-06T10:19:19.992-03:00  INFO 28944 --- [demo] [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-06T10:19:19.993-03:00  INFO 28944 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-06T10:19:19.998-03:00  INFO 28944 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-06T10:19:20.009-03:00  INFO 28944 --- [demo] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-06T10:19:20.022-03:00 ERROR 28944 --- [demo] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2025-11-06T10:19:28.850-03:00  INFO 6944 --- [demo] [main] com.example.monitor.MonitorApplication   : Starting MonitorApplication using Java 25 with PID 6944 (C:\Users\davic\Downloads\monitor\monitor\target\classes started by davic in C:\Users\davic\Downloads\monitor)
+2025-11-06T10:19:28.851-03:00  INFO 6944 --- [demo] [main] com.example.monitor.MonitorApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-06T10:19:29.421-03:00  INFO 6944 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-06T10:19:29.483-03:00  INFO 6944 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 54 ms. Found 5 JPA repository interfaces.
+2025-11-06T10:19:30.027-03:00  INFO 6944 --- [demo] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-06T10:19:30.039-03:00  INFO 6944 --- [demo] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-06T10:19:30.039-03:00  INFO 6944 --- [demo] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-11-06T10:19:30.114-03:00  INFO 6944 --- [demo] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-06T10:19:30.115-03:00  INFO 6944 --- [demo] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1230 ms
+2025-11-06T10:19:30.218-03:00  INFO 6944 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-06T10:19:30.468-03:00  INFO 6944 --- [demo] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/monitorhidrico user=SA
+2025-11-06T10:19:30.470-03:00  INFO 6944 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-06T10:19:30.571-03:00  INFO 6944 --- [demo] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-06T10:19:30.623-03:00  INFO 6944 --- [demo] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-11-06T10:19:30.653-03:00  INFO 6944 --- [demo] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-11-06T10:19:30.905-03:00  INFO 6944 --- [demo] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-06T10:19:30.945-03:00  WARN 6944 --- [demo] [main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-06T10:19:30.960-03:00  INFO 6944 --- [demo] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-06T10:19:31.638-03:00  INFO 6944 --- [demo] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-06T10:19:31.683-03:00  INFO 6944 --- [demo] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-06T10:19:31.932-03:00  INFO 6944 --- [demo] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-06T10:19:32.377-03:00  WARN 6944 --- [demo] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-06T10:19:32.550-03:00  WARN 6944 --- [demo] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 9548a595-b1bc-49b6-9cd3-6a30b38af135
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-11-06T10:19:32.556-03:00  INFO 6944 --- [demo] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-11-06T10:19:32.796-03:00  INFO 6944 --- [demo] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/monitorhidrico'
+2025-11-06T10:19:32.862-03:00  INFO 6944 --- [demo] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-06T10:19:32.870-03:00  INFO 6944 --- [demo] [main] com.example.monitor.MonitorApplication   : Started MonitorApplication in 4.367 seconds (process running for 4.72)
+2025-11-06T10:19:41.521-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-06T10:19:41.521-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-11-06T10:19:41.522-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-11-06T10:20:43.672-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.05m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:43.673-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.05m
+2025-11-06T10:20:43.756-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.0999999999999996m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:43.757-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.0999999999999996m
+2025-11-06T10:20:43.863-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.1499999999999995m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:43.864-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.1499999999999995m
+2025-11-06T10:20:43.959-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.1999999999999993m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:43.959-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.1999999999999993m
+2025-11-06T10:20:44.052-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.249999999999999m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.052-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.249999999999999m
+2025-11-06T10:20:44.162-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.299999999999999m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.162-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.299999999999999m
+2025-11-06T10:20:44.254-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.3499999999999988m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.255-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.3499999999999988m
+2025-11-06T10:20:44.363-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.3999999999999986m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.363-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.3999999999999986m
+2025-11-06T10:20:44.459-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.4499999999999984m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.459-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.4499999999999984m
+2025-11-06T10:20:44.564-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.4999999999999982m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.564-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.4999999999999982m
+2025-11-06T10:20:44.656-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.549999999999998m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.656-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.549999999999998m
+2025-11-06T10:20:44.763-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.599999999999998m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.764-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.599999999999998m
+2025-11-06T10:20:44.860-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.6499999999999977m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.860-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.6499999999999977m
+2025-11-06T10:20:44.953-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.6999999999999975m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:44.953-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.6999999999999975m
+2025-11-06T10:20:45.061-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.7499999999999973m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.061-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.7499999999999973m
+2025-11-06T10:20:45.157-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.799999999999997m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.157-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.799999999999997m
+2025-11-06T10:20:45.264-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.849999999999997m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.265-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.849999999999997m
+2025-11-06T10:20:45.356-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.899999999999997m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.356-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.899999999999997m
+2025-11-06T10:20:45.463-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.9499999999999966m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.464-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.9499999999999966m
+2025-11-06T10:20:45.555-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=2.9999999999999964m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.555-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 2.9999999999999964m
+2025-11-06T10:20:45.662-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.0499999999999963m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.663-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.0499999999999963m
+2025-11-06T10:20:45.754-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.099999999999996m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.755-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.099999999999996m
+2025-11-06T10:20:45.864-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.149999999999996m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.865-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.149999999999996m
+2025-11-06T10:20:45.950-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.1999999999999957m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:45.951-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.1999999999999957m
+2025-11-06T10:20:46.051-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.2499999999999956m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.052-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.2499999999999956m
+2025-11-06T10:20:46.150-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.2999999999999954m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.150-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.2999999999999954m
+2025-11-06T10:20:46.251-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.349999999999995m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.251-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.349999999999995m
+2025-11-06T10:20:46.350-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.399999999999995m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.351-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.399999999999995m
+2025-11-06T10:20:46.451-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.449999999999995m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.451-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.449999999999995m
+2025-11-06T10:20:46.550-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.4999999999999947m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.550-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.4999999999999947m
+2025-11-06T10:20:46.651-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.5499999999999945m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.652-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.5499999999999945m
+2025-11-06T10:20:46.655-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:46.751-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.5999999999999943m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.752-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.5999999999999943m
+2025-11-06T10:20:46.753-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:46.852-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.649999999999994m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.852-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.649999999999994m
+2025-11-06T10:20:46.854-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:46.953-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.699999999999994m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:46.954-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.699999999999994m
+2025-11-06T10:20:46.956-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:47.052-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.749999999999994m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:47.053-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.749999999999994m
+2025-11-06T10:20:47.055-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:47.151-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.7999999999999936m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:47.151-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.7999999999999936m
+2025-11-06T10:20:47.153-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:47.253-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.8499999999999934m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:47.253-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-1] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.8499999999999934m
+2025-11-06T10:20:47.255-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-1] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:47.352-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.8999999999999932m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:47.352-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-3] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.8999999999999932m
+2025-11-06T10:20:47.354-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-3] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:47.452-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.949999999999993m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:47.452-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-5] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.949999999999993m
+2025-11-06T10:20:47.454-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-5] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:48.155-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=3.999999999999993m, Fluxo=1.5, Status=NORMAL
+2025-11-06T10:20:48.156-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-7] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 3.999999999999993m
+2025-11-06T10:20:48.158-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-7] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:20:50.963-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Recebendo dados do sensor 11111111-1111-1111-1111-111111111111: Nível=4.049999999999993m, Fluxo=1.5, Status=CRITICAL
+2025-11-06T10:20:50.964-03:00  INFO 6944 --- [demo] [http-nio-8081-exec-9] c.example.monitor.service.SensorService  :  Processando dados do sensor: Sensor 11111111... - Nível: 4.049999999999993m
+2025-11-06T10:20:50.966-03:00 ERROR 6944 --- [demo] [http-nio-8081-exec-9] c.e.monitor.controller.SensorController  :  Erro ao processar dados do sensor: Cannot invoke "com.example.monitor.repository.UserRepository.findByAtivoTrue()" because "this.userRepository" is null
+2025-11-06T10:25:09.848-03:00  INFO 6944 --- [demo] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-06T10:25:09.852-03:00  INFO 6944 --- [demo] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-11-06T10:25:09.854-03:00  INFO 6944 --- [demo] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-06T10:25:09.855-03:00  INFO 6944 --- [demo] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-06T10:25:09.856-03:00  INFO 6944 --- [demo] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-06T15:07:00.116-03:00  INFO 9004 --- [demo] [main] com.example.monitor.MonitorApplication   : Starting MonitorApplication using Java 25 with PID 9004 (C:\Users\davic\Downloads\monitor\monitor\target\classes started by davic in C:\Users\davic\Downloads\monitor)
+2025-11-06T15:07:00.119-03:00  INFO 9004 --- [demo] [main] com.example.monitor.MonitorApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-06T15:07:00.936-03:00  INFO 9004 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-06T15:07:00.998-03:00  INFO 9004 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 5 JPA repository interfaces.
+2025-11-06T15:07:01.506-03:00  INFO 9004 --- [demo] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-06T15:07:01.522-03:00  INFO 9004 --- [demo] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-06T15:07:01.522-03:00  INFO 9004 --- [demo] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-11-06T15:07:01.590-03:00  INFO 9004 --- [demo] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-06T15:07:01.590-03:00  INFO 9004 --- [demo] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1435 ms
+2025-11-06T15:07:01.678-03:00  INFO 9004 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-06T15:07:01.905-03:00  INFO 9004 --- [demo] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/monitorhidrico user=SA
+2025-11-06T15:07:01.907-03:00  INFO 9004 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-06T15:07:02.007-03:00  INFO 9004 --- [demo] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-06T15:07:02.074-03:00  INFO 9004 --- [demo] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-11-06T15:07:02.112-03:00  INFO 9004 --- [demo] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-11-06T15:07:02.394-03:00  INFO 9004 --- [demo] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-06T15:07:02.439-03:00  WARN 9004 --- [demo] [main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-06T15:07:02.453-03:00  INFO 9004 --- [demo] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-06T15:07:03.136-03:00  INFO 9004 --- [demo] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-06T15:07:03.178-03:00  INFO 9004 --- [demo] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-06T15:07:03.445-03:00  INFO 9004 --- [demo] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-06T15:07:03.948-03:00  WARN 9004 --- [demo] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-06T15:07:04.126-03:00  WARN 9004 --- [demo] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 0542602a-6f13-4291-98dc-b75fee8518d2
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-11-06T15:07:04.133-03:00  INFO 9004 --- [demo] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-11-06T15:07:04.370-03:00  INFO 9004 --- [demo] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/monitorhidrico'
+2025-11-06T15:07:04.419-03:00  INFO 9004 --- [demo] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-06T15:07:04.426-03:00  INFO 9004 --- [demo] [main] com.example.monitor.MonitorApplication   : Started MonitorApplication in 4.728 seconds (process running for 5.147)
+2025-11-06T15:08:08.206-03:00  INFO 9004 --- [demo] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-06T15:08:08.211-03:00  INFO 9004 --- [demo] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-11-06T15:08:08.214-03:00  INFO 9004 --- [demo] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-06T15:08:08.216-03:00  INFO 9004 --- [demo] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-06T15:08:08.217-03:00  INFO 9004 --- [demo] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

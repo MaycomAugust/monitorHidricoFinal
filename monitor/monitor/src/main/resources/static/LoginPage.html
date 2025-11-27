@@ -1,0 +1,667 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MonitorHídrico - Sistema de Monitoramento</title>
+    <style>
+        :root {
+            --primary: #0d3b66;
+            --secondary: #1e5a96;
+            --accent: #00aebf;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d3b66 0%, #1e5a96 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        footer {
+          margin-top: 30%;
+          
+        }
+
+        .container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-section {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .welcome-text h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .welcome-text p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .features {
+            margin-top: 40px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot-password a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .welcome-section {
+                padding: 30px;
+            }
+            
+            .auth-section {
+                padding: 30px;
+            }
+        }
+
+        /* NOVO BLOCO PARA LOGO */
+.logo-box {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+
+}
+.insta-box {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Mantém tudo centralizado no rodapé */
+    gap: 12px; /* Espaço entre a imagem e o texto */
+    margin-top: 10px;
+}
+
+.insta-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.insta-text {
+    color: rgb(223, 13, 111);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Seção de Boas-Vindas -->
+    <div class="welcome-section">
+        <div class="logo">
+            <div class="logo-box">
+    <img src="logobranca.png" class="logo-img" alt="Logo">
+</div>
+
+            <h1>Monitor Hídrico (2022)</h1>
+        </div>
+        <div class="welcome-text">
+            <h2>Monitoramento Inteligente de Recursos Hídricos</h2>
+            <p>Sistema completo para monitoramento em tempo real de níveis de água, com alertas instantâneos e relatórios detalhados.</p>
+        </div>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🔔</div>
+                <div>
+                    <h4>Alertas em Tempo Real</h4>
+                    <p>Notificações instantâneas no navegador e e-mail</p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <div>
+                    <h4>Dashboard Interativo</h4>
+                    <p>Visualização completa dos dados dos sensores</p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🌐​</div>
+                <div>
+                    <h4>Multimodais</h4>
+                    <p>Acesse de qualquer dispositivo com internet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de Autenticação -->
+    <div class="auth-section">
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">🛅Entrar</button>
+            <button class="auth-tab" data-tab="register">🪪Cadastrar</button>
+        </div>
+
+        <!-- Formulário de Login -->
+        <div class="form-container active" id="loginForm">
+            <form id="loginFormElement">
+                <div class="form-group">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+                    <div class="error-message" id="loginEmailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" placeholder="Sua senha" required>
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+            <div class="forgot-password">
+                <a href="#" id="forgotPasswordLink">Esqueceu sua senha?</a>
+                <footer>
+                    <div class="insta-box">
+                    <a href="https://www.instagram.com/monitor.hidrico/" target="_blank">
+                        <img src="image.png" alt="Instagram" class="insta-img">
+                    </a>
+                        <p class="insta-text">Instagram</p>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <div class="form-container" id="registerForm">
+            <form id="registerFormElement">
+                <div class="form-group">
+                    <label for="registerName">Nome Completo</label>
+                    <input type="text" id="registerName" placeholder="Seu nome completo" required>
+                    <div class="error-message" id="registerNameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">E-mail</label>
+                    <input type="email" id="registerEmail" placeholder="seu@email.com" required>
+                    <div class="error-message" id="registerEmailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required>
+                    <div class="error-message" id="registerPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirmar Senha</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="Digite novamente" required>
+                    <div class="error-message" id="registerConfirmPasswordError"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Criar Conta</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Recuperação de Senha -->
+<div id="forgotPasswordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px;">
+        <h3 style="margin-bottom: 20px; color: var(--primary);">Recuperar Senha</h3>
+        <p style="margin-bottom: 20px; color: var(--gray);">Digite seu e-mail para receber o link de recuperação.</p>
+        <div class="form-group">
+            <input type="email" id="forgotEmail" placeholder="seu@email.com" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 8px;">
+            <div class="error-message" id="forgotEmailError"></div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn btn-secondary" id="cancelForgotPassword">Cancelar</button>
+            <button class="btn btn-primary" id="submitForgotPassword">Enviar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Configuração da API
+    const API_BASE_URL = "http://localhost:8081/api";
+
+    // Elementos DOM
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const formContainers = document.querySelectorAll('.form-container');
+    const loginForm = document.getElementById('loginFormElement');
+    const registerForm = document.getElementById('registerFormElement');
+    const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const cancelForgotPassword = document.getElementById('cancelForgotPassword');
+    const submitForgotPassword = document.getElementById('submitForgotPassword');
+
+    // Alternar entre login e cadastro
+    authTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.getAttribute('data-tab');
+            
+            // Atualizar tabs
+            authTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // Atualizar formulários
+            formContainers.forEach(form => form.classList.remove('active'));
+            document.getElementById(`${targetTab}Form`).classList.add('active');
+        });
+    });
+
+    // Modal de recuperação de senha
+    forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        forgotPasswordModal.style.display = 'flex';
+    });
+
+    cancelForgotPassword.addEventListener('click', () => {
+        forgotPasswordModal.style.display = 'none';
+    });
+
+    submitForgotPassword.addEventListener('click', async () => {
+        const email = document.getElementById('forgotEmail').value.trim();
+        const errorElement = document.getElementById('forgotEmailError');
+
+        if (!email) {
+            showError(errorElement, 'Por favor, digite seu e-mail');
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            showError(errorElement, 'Por favor, digite um e-mail válido');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                alert('E-mail de recuperação enviado! Verifique sua caixa de entrada.');
+                forgotPasswordModal.style.display = 'none';
+            } else {
+                showError(errorElement, result.message || 'Erro ao enviar e-mail');
+            }
+        } catch (error) {
+            showError(errorElement, 'Erro ao enviar e-mail. Tente novamente.');
+        }
+    });
+
+    // Validação de formulário de login
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        
+        const emailError = document.getElementById('loginEmailError');
+        const passwordError = document.getElementById('loginPasswordError');
+        
+        // Limpar erros anteriores
+        clearErrors();
+        
+        let isValid = true;
+        
+        if (!email) {
+            showError(emailError, 'Por favor, digite seu e-mail');
+            isValid = false;
+        } else if (!validateEmail(email)) {
+            showError(emailError, 'Por favor, digite um e-mail válido');
+            isValid = false;
+        }
+        
+        if (!password) {
+            showError(passwordError, 'Por favor, digite sua senha');
+            isValid = false;
+        }
+        
+        if (!isValid) return;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    senha: password
+                })
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                // Salvar token e dados do usuário
+                localStorage.setItem('mh_token', result.token);
+                localStorage.setItem('mh_user', JSON.stringify(result.user));
+                
+                // Redirecionar baseado no papel do usuário
+                if (result.user.role === 'ROLE_ADMIN') {
+                    window.location.href = 'SistemaADM.html';
+                } else {
+                    window.location.href = 'PaginaLogado.html';
+                }
+                
+            } else {
+                showError(passwordError, result.message || 'Erro ao fazer login');
+            }
+            
+        } catch (error) {
+            showError(passwordError, 'Erro de conexão. Tente novamente.');
+        }
+    });
+
+    // Validação de formulário de cadastro
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('registerName').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('registerConfirmPassword').value;
+        
+        const nameError = document.getElementById('registerNameError');
+        const emailError = document.getElementById('registerEmailError');
+        const passwordError = document.getElementById('registerPasswordError');
+        const confirmPasswordError = document.getElementById('registerConfirmPasswordError');
+        
+        // Limpar erros anteriores
+        clearErrors();
+        
+        let isValid = true;
+        
+        if (!name) {
+            showError(nameError, 'Por favor, digite seu nome');
+            isValid = false;
+        }
+        
+        if (!email) {
+            showError(emailError, 'Por favor, digite seu e-mail');
+            isValid = false;
+        } else if (!validateEmail(email)) {
+            showError(emailError, 'Por favor, digite um e-mail válido');
+            isValid = false;
+        }
+        
+        if (!password) {
+            showError(passwordError, 'Por favor, digite uma senha');
+            isValid = false;
+        } else if (password.length < 6) {
+            showError(passwordError, 'A senha deve ter pelo menos 6 caracteres');
+            isValid = false;
+        }
+        
+        if (!confirmPassword) {
+            showError(confirmPasswordError, 'Por favor, confirme sua senha');
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            showError(confirmPasswordError, 'As senhas não coincidem');
+            isValid = false;
+        }
+        
+        if (!isValid) return;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nome: name,
+                    email: email,
+                    senha: password,
+                    telefone: '' // Opcional
+                })
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                alert('Cadastro realizado com sucesso! Faça login para continuar.');
+                
+                // Alternar para a aba de login
+                authTabs.forEach(t => t.classList.remove('active'));
+                document.querySelector('[data-tab="login"]').classList.add('active');
+                formContainers.forEach(form => form.classList.remove('active'));
+                document.getElementById('loginForm').classList.add('active');
+                
+                // Preencher automaticamente o e-mail no login
+                document.getElementById('loginEmail').value = email;
+                
+            } else {
+                showError(emailError, result.message || 'Erro ao criar conta');
+            }
+            
+        } catch (error) {
+            showError(emailError, 'Erro de conexão. Tente novamente.');
+        }
+    });
+
+    // Funções auxiliares
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function showError(element, message) {
+        element.textContent = message;
+        element.style.display = 'block';
+    }
+
+    function clearErrors() {
+        document.querySelectorAll('.error-message').forEach(error => {
+            error.style.display = 'none';
+        });
+    }
+
+    // Verificar se já está logado
+    document.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem('mh_token');
+        const user = JSON.parse(localStorage.getItem('mh_user') || 'null');
+        
+        if (token && user) {
+            if (user.role === 'ROLE_ADMIN') {
+                window.location.href = 'SistemaADM.html';
+            } else {
+                window.location.href = 'PaginaLogado.html';
+            }
+        }
+    });
+</script>
+</body>
+</html>
